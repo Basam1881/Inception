@@ -2,8 +2,11 @@ FROM debian:latest
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    nginx
-    # curl
+    nginx\
+    curl\
+    net-tools\
+    netcat\
+    iputils-ping
 
 # Copy the NGINX configuration
 COPY conf /etc/nginx/sites-enabled/default
