@@ -1,22 +1,9 @@
-#generate ssl certificate
-echo -e "\n\n\n\n\n\n\n\n" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out certificate.pem
-echo
-echo -e "\033[32m------------------ ssl files are successfully CREATED ------------------\033[0m"
+# check if ../certs/key.pem and ../certs/certificate.pem exist
+if [ ! -f "../certs/key.pem" ] && [ ! -f "../certs/certificate.pem" ]; then
+  # create ssl directory
+  SSL_DIR="../certs"
+  mkdir -p ${SSL_DIR}
 
-# create ssl directory
-SSL_DIR="../certs"
-mkdir -p ${SSL_DIR}
-
-# mv ssl files
-mv certificate.pem ${SSL_dir}/certificate.pem
-if [ $? -ne 0 ]; then
-  echo -e "\033[31m------------------ ssl files are NOT MOVED ------------------\033[0m"
-  exit 1
-fi
-mv key.pem ${SSL_dir}/key.pem
-if [ $? -ne 0 ]; then
-  echo -e "\033[31m------------------ ssl files are NOT MOVED ------------------\033[0m"
-  exit 1
-else
-  echo -e "\033[32m------------------ ssl files are successfully MOVED ------------------\033[0m"
+  #generate ssl certificate
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${SSL_DIR}/key.pem -out ${SSL_DIR}/certificate.pem -subj '/CN=localhost/O=42AbuDhabi'
 fi

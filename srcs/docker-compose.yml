@@ -2,9 +2,7 @@ version: '3.9'
 services:
   nginx:
     container_name: mynginx
-    build:
-      context: requirements/nginx
-      dockerfile: Dockerfile
+    build: requirements/nginx
     ports:
       - 443:443
     restart: on-failure
@@ -17,31 +15,23 @@ services:
 
   wordpress:
     container_name: mywordpress
-    # image: wordpress:latest
-    build:
-      context: requirements/wordpress
-      dockerfile: Dockerfile  
+    build: requirements/wordpress
     restart: on-failure
     networks:
       - my-network
+    env_file:
+      - .env
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress-files:/var/www/html
     depends_on:
       - mariadb
-    # ports:
-    #   - 8001:80
 
   mariadb:
     container_name: mymariadb
     image: mariadb:latest
-    # build:
-    #   context: requirements/mariadb
-    #   dockerfile: Dockerfile
+    # build: requirements/mariadb
     # ports:
     #   - "3306:3306"
     restart: always
@@ -57,11 +47,11 @@ services:
 
 volumes:
   wordpress-files:
-  wordpress-content:
-  shared:
+    name: wordpress-files
   db-data:
-  
+    name: wordpress-db
 
 networks:
   my-network:
+    name: docker-network
 
