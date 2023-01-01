@@ -2,7 +2,6 @@ FROM debian:buster
 
 # Install dependencies
 RUN apt-get update && apt-get install -y nginx \
-    tini \
     && rm -rf /var/lib/apt/lists/* 
 
 COPY certs/certificate.pem /etc/ssl/certs/certificate.pem
@@ -17,5 +16,5 @@ WORKDIR /var/www/html
 EXPOSE 443
 
 # USER nginx
-ENTRYPOINT [ "tini", "--" ]
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "nginx" ]
+CMD [ "-g", "daemon off;"]
