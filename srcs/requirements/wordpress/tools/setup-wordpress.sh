@@ -1,7 +1,8 @@
+
 cp wp-config-sample.php wp-config.php && \
-  sed -i "s/database_name_here/$WORDPRESS_DB_NAME/g" /var/www/html/wp-config.php && \
-  sed -i "s/username_here/$WORDPRESS_DB_USER/g" /var/www/html/wp-config.php && \
-  sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/g" /var/www/html/wp-config.php && \
+  sed -i "s/database_name_here/$MYSQL_DB_NAME/g" /var/www/html/wp-config.php && \
+  sed -i "s/username_here/$MYSQL_USER_NAME/g" /var/www/html/wp-config.php && \
+  sed -i "s/password_here/$MYSQL_USER_PASSWORD/g" /var/www/html/wp-config.php && \
   sed -i "s/localhost/$WORDPRESS_DB_HOST/g" /var/www/html/wp-config.php
 
 

@@ -20,7 +20,7 @@ RUN wget https://wordpress.org/latest.tar.gz -P /tmp && \
     mv /tmp/wordpress/* /var/www/html && \
     rm -rf /tmp/wordpress
 
-# Configure PHP-FPM
+# secure php
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.3/fpm/php.ini
 
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d
@@ -38,7 +38,6 @@ EXPOSE 9000
 # setup wordpress
 COPY tools/setup-wordpress.sh /tmp
 RUN chmod +x /tmp/setup-wordpress.sh
-
 
 # Start PHP-FPM
 ENTRYPOINT ["tini", "--"];

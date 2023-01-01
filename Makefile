@@ -12,17 +12,31 @@ ssl:
 ps:
 	@sudo docker compose --file srcs/docker-compose.yml ps
 
+bashn:
+	@sudo docker exec -it mynginx bash
+
+bashw:
+	@sudo docker exec -it mywordpress bash
+
+bashm:
+	@sudo docker exec -it mymariadb bash
+
 down:
 	@sudo docker compose --file srcs/docker-compose.yml down
 
 downv:
 	@sudo docker compose --file srcs/docker-compose.yml down -v
 
-fclean:
-	@sudo docker compose --file srcs/docker-compose.yml down -v --rmi all
+purge:
 	@if sudo docker images --all | grep -q '<none>'; then \
-		docker rmi -f $(docker images -f "dangling=true" -q); \
+		sudo docker rmi -f $(sudo docker images -f "dangling=true" -q); \
 	fi
+
+fclean: purge
+	@sudo docker compose --file srcs/docker-compose.yml down -v --rmi all
+
+re: down all
+
 ve: downv all
 
-re: fclean all
+fe: fclean all

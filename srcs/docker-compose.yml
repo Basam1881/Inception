@@ -30,18 +30,15 @@ services:
 
   mariadb:
     container_name: mymariadb
-    image: mariadb:latest
-    # build: requirements/mariadb
-    # ports:
-    #   - "3306:3306"
+    build: requirements/mariadb
     restart: always
     networks:
       - my-network
     environment:
+      MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+      MYSQL_USER_NAME: ${MYSQL_USER_NAME}
+      MYSQL_USER_PASSWORD: ${MYSQL_USER_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
-      MYSQL_USER: ${WORDPRESS_DB_USER}
-      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
 
