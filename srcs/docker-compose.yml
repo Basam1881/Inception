@@ -30,17 +30,31 @@ services:
 
   mariadb:
     container_name: mymariadb
-    build: requirements/mariadb
-    restart: always
+    build: 
+      context: requirements/mariadb
+      args:
+        MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+        MYSQL_USER_NAME: ${MYSQL_USER_NAME}
+        MYSQL_USER_PASSWORD: ${MYSQL_USER_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+    restart: on-failure
     networks:
       - my-network
-    environment:
-      MYSQL_DB_NAME: ${MYSQL_DB_NAME}
-      MYSQL_USER_NAME: ${MYSQL_USER_NAME}
-      MYSQL_USER_PASSWORD: ${MYSQL_USER_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
+  
+  # ftp-server:
+  #   image: fauria/vsftpd
+  #   environment:
+  #     - FTP_USER=ftpuser
+  #     - FTP_PASS=ftppass
+  #   # build: requirements/bonus/ftp
+  #   restart: on-failure
+  #   ports:
+  #       - 0.0.0.0:20:20
+  #       - 0.0.0.0:21:21
+  #   volumes:
+  #     - wordpress-files:/home/vsftpd
 
 volumes:
   wordpress-files:
