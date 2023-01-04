@@ -1,0 +1,12 @@
+# Ignore files and directories in the root directory
+.git
+wp-content/uploads
+wp-content/cache
+
+# Ignore specific files
+wp-config.php
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Ignore specific directories
+wp-content/plugins/hello.php

@@ -1,0 +1,90 @@
+version: '3.9'
+services:
+  nginx:
+    container_name: mynginx
+    build: ../nginx
+    ports:
+      - 443:443
+    restart: on-failure
+    volumes:
+      - wordpress-files:/var/www/html
+    networks:
+      - my-network
+    depends_on:
+      - wordpress
+
+  wordpress:
+    container_name: mywordpress
+    build: wordpress
+    restart: on-failure
+    networks:
+      - my-network
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+    volumes:
+      - wordpress-files:/var/www/html
+    depends_on:
+      - mariadb
+
+  mariadb:
+    container_name: mymariadb
+    build: 
+      context: ../mariadb
+      args:
+        MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+        MYSQL_USER_NAME: ${MYSQL_USER_NAME}
+        MYSQL_USER_PASSWORD: ${MYSQL_USER_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+    restart: on-failure
+    networks:
+      - my-network
+    volumes:
+      - db-data:/var/lib/mysql
+  
+  adminer:
+    container_name: myadminer
+    build: Adminer
+    restart: on-failure
+    networks:
+      - my-network
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress-files:/var/www/html
+  
+    
+  static-website:
+    container_name: myportfolio
+    build: StaticWebsite
+    restart: on-failure
+    networks:
+      - my-network
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress-files:/var/www/html
+
+  ftp-server:
+    container_name: myftp
+    build: ftp
+    env_file:
+      - .env
+    restart: on-failure
+    ports:
+        - 20:20
+        - 21:21
+    volumes:
+      - wordpress-files:/var/ftp/pub
+
+volumes:
+  wordpress-files:
+    name: wordpress-files
+  db-data:
+    name: wordpress-db
+
+networks:
+  my-network:
+    name: docker-network
+
