@@ -3,8 +3,7 @@ FROM debian:buster
 RUN apt-get update && apt-get install -y \
     php-fpm \
     php-mysql \
-    adminer \
-    && rm -rf /var/lib/apt/lists/*
+    adminer
 
 RUN mkdir -p /run/php
 

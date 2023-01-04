@@ -1,8 +1,6 @@
 FROM debian:buster
 
-RUN apt-get update && apt-get install -y vsftpd \
-    && rm -rf /var/lib/apt/lists/*
-
+RUN apt-get update && apt-get install -y vsftpd
 RUN mkdir -p /var/ftp/pub && mkdir -p /var/run/vsftpd/empty
 
 RUN sed -i '/^#write_enable/s/^#//' /etc/vsftpd.conf

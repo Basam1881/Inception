@@ -3,8 +3,7 @@ FROM debian:buster
 RUN apt-get update && apt-get install -y \
     php-fpm \
     php-mysql \
-    redis \
-    && rm -rf /var/lib/apt/lists/*
+    redis
 
 RUN mkdir -p /run/php
 

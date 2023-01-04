@@ -1,0 +1,16 @@
+# Source code and build artifacts
+src
+build
+node_modules
+
+# Configuration files
+my.cnf
+.mylogin.cnf
+
+# Temporary files
+tmp
+cache
+
+# Log files
+log
+logs

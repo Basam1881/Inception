@@ -1,0 +1,16 @@
+# Ignore logs and cache directories
+logs/
+cache/
+
+# Ignore files and directories generated during the build process
+build/
+*.tar.gz
+
+# Ignore large files that are not necessary for the runtime of the container
+*.iso
+*.zip
+*.tar.xz
+
+# Ignore editor-specific files
+*.swp
+*.swo

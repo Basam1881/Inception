@@ -2,27 +2,27 @@ version: '3.9'
 services:
   nginx:
     container_name: mynginx
-    build: ../nginx
+    build: nginx
     ports:
       - 443:443
     restart: on-failure
-    volumes:
-      - wordpress-files:/var/www/html
     networks:
       - my-network
+    volumes:
+      - wordpress-files:/var/www/html
     depends_on:
       - wordpress
 
   wordpress:
     container_name: mywordpress
     build: wordpress
-    restart: on-failure
-    networks:
-      - my-network
     env_file:
       - .env
     environment:
       WORDPRESS_DB_HOST: mariadb
+    restart: on-failure
+    networks:
+      - my-network
     volumes:
       - wordpress-files:/var/www/html
     depends_on:
@@ -31,7 +31,7 @@ services:
   mariadb:
     container_name: mymariadb
     build: 
-      context: ../mariadb
+      context: mariadb
       args:
         MYSQL_DB_NAME: ${MYSQL_DB_NAME}
         MYSQL_USER_NAME: ${MYSQL_USER_NAME}
@@ -49,34 +49,33 @@ services:
     restart: on-failure
     networks:
       - my-network
-    depends_on:
-      - wordpress
     volumes:
       - wordpress-files:/var/www/html
+    depends_on:
+      - wordpress
   
-    
   static-website:
     container_name: myportfolio
     build: StaticWebsite
     restart: on-failure
     networks:
       - my-network
-    depends_on:
-      - wordpress
     volumes:
       - wordpress-files:/var/www/html
+    depends_on:
+      - wordpress
 
   ftp-server:
     container_name: myftp
     build: ftp
     env_file:
       - .env
-    restart: on-failure
-    networks:
-      - my-network
     ports:
         - 20:20
         - 21:21
+    restart: on-failure
+    networks:
+      - my-network
     volumes:
       - wordpress-files:/var/ftp/pub
 
@@ -88,9 +87,12 @@ services:
       - my-network
     depends_on:
       - wordpress
-    
 
-
+  tor:
+    container_name: mytor
+    build: tor
+    ports:
+      - "9050:9050"
 
 volumes:
   wordpress-files:
