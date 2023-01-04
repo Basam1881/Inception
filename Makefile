@@ -55,6 +55,9 @@ bashp:
 bashf:
 	@sudo docker exec -it myftp bash
 
+bashr:
+	@sudo docker exec -it myredis bash
+
 down:
 	@sudo docker compose --file $(WORKING_DIR)/docker-compose.yml down
 

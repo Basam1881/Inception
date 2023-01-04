@@ -72,11 +72,25 @@ services:
     env_file:
       - .env
     restart: on-failure
+    networks:
+      - my-network
     ports:
         - 20:20
         - 21:21
     volumes:
       - wordpress-files:/var/ftp/pub
+
+  redis:
+    container_name: myredis
+    build: redis
+    restart: on-failure
+    networks:
+      - my-network
+    depends_on:
+      - wordpress
+    
+
+
 
 volumes:
   wordpress-files:

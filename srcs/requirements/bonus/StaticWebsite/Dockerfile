@@ -3,7 +3,8 @@ FROM debian:buster
 RUN apt-get update && apt-get install -y \
     php-fpm \
     php-mysql \
-    git
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/Basam1881/Portfolio.git /tmp/portfolio
 

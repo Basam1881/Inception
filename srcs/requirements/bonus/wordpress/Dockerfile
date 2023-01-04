@@ -6,8 +6,10 @@ RUN apt-get update && apt-get install -y \
     php-fpm\
     php-mysql\
     sendmail \
-    sudo
-    # && rm -rf /var/lib/apt/lists/*
+    sudo \
+    mariadb-client \
+    redis \
+    && rm -rf /var/lib/apt/lists/*
 
 # make sure it's created 
 RUN mkdir -p /run/php
@@ -33,7 +35,7 @@ COPY conf/www.conf /etc/php/7.3/fpm/pool.d
 
 RUN cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 
-# 
+# Change permissions for /var/www/html
 RUN chmod 775 /var/www/html/ && \
     chown -R www-data:www-data /var/www/html/
 

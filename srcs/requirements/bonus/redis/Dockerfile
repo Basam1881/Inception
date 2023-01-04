@@ -3,15 +3,15 @@ FROM debian:buster
 RUN apt-get update && apt-get install -y \
     php-fpm \
     php-mysql \
-    adminer \
+    redis \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/php
 
-COPY tools/setup-adminer.sh /tmp
-RUN chmod +x /tmp/setup-adminer.sh 
+RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf
 
-WORKDIR /var/www/html
+EXPOSE 6379
+WORKDIR /var/www/html/wp-content/plugins
 
 ENTRYPOINT [ "bash", "-c" ]
-CMD [ "/tmp/setup-adminer.sh && php-fpm7.3 --nodaemonize" ]
+CMD [ "redis-server --protected-mode no" ]
