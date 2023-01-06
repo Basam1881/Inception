@@ -9,7 +9,7 @@ services:
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - wordpress
 
@@ -24,7 +24,7 @@ services:
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - mariadb
 
@@ -41,7 +41,7 @@ services:
     networks:
       - my-network
     volumes:
-      - db-data:/var/lib/mysql
+      - sql:/var/lib/mysql
   
   adminer:
     container_name: myadminer
@@ -50,18 +50,20 @@ services:
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - wordpress
   
   static-website:
     container_name: myportfolio
     build: StaticWebsite
+    environment:
+      - USERNAME=${USERNAME}
     restart: on-failure
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - wordpress
 
@@ -77,7 +79,9 @@ services:
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/ftp/pub
+      - wp:/var/ftp/pub
+    depends_on:
+      - wordpress
 
   redis:
     container_name: myredis
@@ -91,14 +95,26 @@ services:
   tor:
     container_name: mytor
     build: tor
+    restart: on-failure
     ports:
       - "9050:9050"
 
+
 volumes:
-  wordpress-files:
-    name: wordpress-files
-  db-data:
-    name: wordpress-db
+  wp:
+    name: wp-b
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USERNAME}/data/bonus/wp
+      o: bind
+  sql:
+    name: db-b
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USERNAME}/data/bonus/sql
+      o: bind
 
 networks:
   my-network:

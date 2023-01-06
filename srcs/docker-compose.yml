@@ -7,7 +7,7 @@ services:
       - 443:443
     restart: on-failure
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     networks:
       - my-network
     depends_on:
@@ -24,7 +24,7 @@ services:
     networks:
       - my-network
     volumes:
-      - wordpress-files:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - mariadb
 
@@ -41,13 +41,23 @@ services:
     networks:
       - my-network
     volumes:
-      - db-data:/var/lib/mysql
+      - sql:/var/lib/mysql
 
 volumes:
-  wordpress-files:
-    name: wordpress-files
-  db-data:
-    name: wordpress-db
+  wp:
+    name: wp
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USERNAME}/data/wp
+      o: bind
+  sql:
+    name: db
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USERNAME}/data/sql
+      o: bind
 
 networks:
   my-network:

@@ -1,15 +1,11 @@
 SRC_DIR=srcs
 BONUS_DIR=srcs/requirements/bonus
 TOOLS_DIR=srcs/requirements/tools
-# WORKING_DIR=$(BONUS_DIR)
-# BONUS_FIILE=.bonus
-
-# ifeq ($(shell test -e "srcs/docker-compose.yml"), 0)
-# 	WORKING_DIR=$(BONUS_DIR)
-# endif
-
 ENV_FILE=.env
 ENV_FILE_EXAMPLE=.env.example
+USERNAME=bnaji
+
+## mandatory rules ##
 
 all: setup build
 
@@ -62,14 +58,14 @@ fclean-b: purge
 
 re-b: down-b bonus
 
-ve-b: downv bonus
+ve-b: downv-b bonus
 
-fe-b: fclean bonus
+fe-b: fclean-b bonus
 
 
 ## common rules ##
 
-setup: ssl env
+setup: ssl env vol host
 
 ssl:
 	@chmod +x $(TOOLS_DIR)/generate-ssl.sh
@@ -78,6 +74,17 @@ ssl:
 env:
 	@if [ ! -e $(SRC_DIR)/$(ENV_FILE) ]; then cp $(SRC_DIR)/$(ENV_FILE_EXAMPLE) $(SRC_DIR)/$(ENV_FILE) ; fi
 	@if [ ! -e $(BONUS_DIR)/$(ENV_FILE) ]; then cp $(BONUS_DIR)/$(ENV_FILE_EXAMPLE) $(BONUS_DIR)/$(ENV_FILE) ; fi
+
+vol:
+	@mkdir -p /home/${USERNAME}/data/wp
+	@mkdir -p /home/${USERNAME}/data/sql
+	@mkdir -p /home/${USERNAME}/data/bonus
+	@mkdir -p /home/${USERNAME}/data/bonus/wp
+	@mkdir -p /home/${USERNAME}/data/bonus/sql
+
+host:
+	@chmod +x $(TOOLS_DIR)/add-hosts-entry.sh
+	@sudo bash $(TOOLS_DIR)/add-hosts-entry.sh
 
 bashn:
 	@sudo docker exec -it mynginx bash
