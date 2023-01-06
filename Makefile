@@ -7,7 +7,7 @@ USERNAME=bnaji
 
 ## mandatory rules ##
 
-all: setup build
+all: setup run
 
 run:
 	@sudo docker compose --file $(SRC_DIR)/docker-compose.yml up -d
@@ -36,7 +36,7 @@ fe: fclean all
 
 ## bonus rules ##
 
-bonus: setup build-b
+bonus: setup run-b
 
 run-b:
 	@sudo docker compose --file $(BONUS_DIR)/docker-compose.yml up -d
